@@ -1,9 +1,23 @@
+You have to install :
+* MySQL 5.6
+* php 7.1
+
 For install this project
+
 `git clone https://github.com/semasping/test-nf`
+
+'cp .env.example .env'
+`php artisan key:generate`
+
+Setup mysql config in .env file
+`nano .env`
+ 
+Start server
 `php artisan serve`
 
-You have to install :
-MySQL 5.6
-php 7.1
+
+Site will be available at http://localhost:8000
+
+
 
 
