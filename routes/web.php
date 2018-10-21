@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'NewsController@index');
+Route::get('/show/{id}', 'NewsController@show');
+
+Route::resource('manager', 'NewsController')->only([
+    'create', 'store', 'update', 'destroy'
+]); //->middleware('auth');
