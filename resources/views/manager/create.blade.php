@@ -1,3 +1,4 @@
+@extends('layouts.app')
 @if($errors->any())
     Errors:
     @foreach ($errors->all() as $error)

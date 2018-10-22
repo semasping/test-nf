@@ -30,7 +30,7 @@ class NewsController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('news.create')->with('categories',$categories);
+        return view('manager.create')->with('categories',$categories);
     }
 
     /**

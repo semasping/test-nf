@@ -1,4 +1,4 @@
-
+@extends('layouts.app')
 <h1><a href="/show/{{ $news->id }}">{{ $news->title }}</a></h1>
 <div><p>
         Body:<br>
