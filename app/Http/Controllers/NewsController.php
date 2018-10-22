@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller
 {
@@ -14,7 +18,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::with('category')->get();
+        $news = News::with('category')->orderByDesc('created_at')->get();
         return view('news.list')->with('news',$news);
     }
 
@@ -25,7 +29,8 @@ class NewsController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('news.create')->with('categories',$categories);
     }
 
     /**
@@ -36,7 +41,31 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validate
+        // read more on validation at http://laravel.com/docs/validation
+        $rules = array(
+            'title'       => 'required',
+            'category_id' => 'required|numeric'
+        );
+        $validator = Validator::make($request->all(), $rules);
+
+
+        if ($validator->fails()) {
+            return Redirect::route('manager.create')
+                ->withErrors($validator)
+                ->withInput($request->all());
+        } else {
+            // store
+            $news = new News();
+            $news->title       = $request->get('title');
+            $news->body      = $request->get('body');
+            $news->category_id = $request->get('category_id');
+            $news->save();
+
+            // redirect
+            Session::flash('message', 'Successfully created news!');
+            return Redirect::to('/');
+        }
     }
 
     /**
