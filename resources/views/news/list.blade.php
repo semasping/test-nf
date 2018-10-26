@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<a href="{{ route('manager' ) }}">Manage news</a>
-@foreach ($news as $item)
-    <h3><a href="/show/{{ $item->id }}">{{ $item->title }}</a></h3>
 
-    <div>
-        Category:{{ $item->category->name }}
+    <div class="col">
+        @foreach ($news as $item)
+            <div class="row">
+                <div class="col"><h3><a href="/show/{{ $item->id }}">{{ $item->title }}</a></h3></div>
+                <div class="col">Category: {{ $item->category->name }}</div>
+            </div>
+        @endforeach
     </div>
-    <br><br>
-@endforeach
 @endsection
