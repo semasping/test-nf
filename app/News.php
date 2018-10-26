@@ -10,4 +10,13 @@ class News extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function scopeOfCategory($query, $category_id)
+    {
+        if (!empty($category_id)) {
+            return $query->where('category_id', $category_id);
+        }
+        return $query;
+
+    }
 }

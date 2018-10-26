@@ -16,10 +16,14 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::with('category')->orderByDesc('created_at')->get();
-        return view('news.list')->with('news',$news);
+
+        $category_id = $request->get('category_id','');
+        $news = News::ofCategory($category_id)->with('category')->orderByDesc('created_at')->get();
+        $categories = Category::all();
+
+        return view('news.list')->with('news',$news)->with('categories',$categories)->with('category_id',$category_id);
     }
     /**
      * Display a listing of the resource.
@@ -29,6 +33,7 @@ class NewsController extends Controller
     public function list()
     {
         $news = News::with('category')->orderByDesc('created_at')->get();
+
         return view('manager.list')->with('news',$news);
     }
 
@@ -40,6 +45,7 @@ class NewsController extends Controller
     public function create()
     {
         $categories = Category::all();
+
         return view('manager.create')->with('categories',$categories);
     }
 
@@ -61,6 +67,7 @@ class NewsController extends Controller
 
 
         if ($validator->fails()) {
+
             return Redirect::route('manager.create')
                 ->withErrors($validator)
                 ->withInput($request->all());
@@ -74,6 +81,7 @@ class NewsController extends Controller
 
             // redirect
             Session::flash('message', 'Successfully created news!');
+
             return Redirect::to('/');
         }
     }
@@ -87,6 +95,7 @@ class NewsController extends Controller
     public function show($id)
     {
         $news = News::with('category')->find($id);
+
         return view('news.show')->with('news',$news);
     }
 
@@ -100,6 +109,7 @@ class NewsController extends Controller
     {
         $categories = Category::all();
         $news = News::find($id);
+
         return view('manager.edit')->with('categories',$categories)->with('news',$news);
     }
 
@@ -120,6 +130,7 @@ class NewsController extends Controller
 
 
         if ($validator->fails()) {
+
             return Redirect::route('manager.create')
                 ->withErrors($validator)
                 ->withInput($request->all());
@@ -133,6 +144,7 @@ class NewsController extends Controller
 
             // redirect
             Session::flash('message', 'Successfully updated news:'.$news->title);
+
             return Redirect::to('/');
         }
     }
@@ -147,6 +159,7 @@ class NewsController extends Controller
     {
         (News::find($id))->delete();
         Session::flash('message', 'Successfully deleted news!');
+
         return Redirect::to('/');
     }
 }
