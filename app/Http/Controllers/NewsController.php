@@ -21,6 +21,16 @@ class NewsController extends Controller
         $news = News::with('category')->orderByDesc('created_at')->get();
         return view('news.list')->with('news',$news);
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list()
+    {
+        $news = News::with('category')->orderByDesc('created_at')->get();
+        return view('manager.list')->with('news',$news);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -88,7 +98,9 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = Category::all();
+        $news = News::find($id);
+        return view('manager.edit')->with('categories',$categories)->with('news',$news);
     }
 
     /**
@@ -100,7 +112,29 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = array(
+            'title'       => 'required',
+            'category_id' => 'required|numeric'
+        );
+        $validator = Validator::make($request->all(), $rules);
+
+
+        if ($validator->fails()) {
+            return Redirect::route('manager.create')
+                ->withErrors($validator)
+                ->withInput($request->all());
+        } else {
+            // store
+            $news = News::find($id);
+            $news->title       = $request->get('title');
+            $news->body      = $request->get('body');
+            $news->category_id = $request->get('category_id');
+            $news->save();
+
+            // redirect
+            Session::flash('message', 'Successfully created news!');
+            return Redirect::to('/');
+        }
     }
 
     /**
@@ -111,6 +145,8 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        (News::find($id))->delete();
+        Session::flash('message', 'Successfully deleted news!');
+        return Redirect::to('/');
     }
 }

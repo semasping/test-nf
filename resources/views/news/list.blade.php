@@ -1,4 +1,5 @@
 @extends('layouts.app')
+<a href="{{ route('manager' ) }}">Manage news</a>
 @foreach ($news as $item)
     <h3><a href="/show/{{ $item->id }}">{{ $item->title }}</a></h3>
 

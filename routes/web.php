@@ -14,6 +14,9 @@
 Route::get('/', 'NewsController@index');
 Route::get('/show/{id}', 'NewsController@show');
 
+
+
+Route::get('manager', 'NewsController@list')->name('manager');
 Route::resource('manager', 'NewsController')->only([
-    'create', 'store', 'update', 'destroy'
+    'create', 'store', 'update', 'edit', 'destroy'
 ]); //->middleware('auth');
