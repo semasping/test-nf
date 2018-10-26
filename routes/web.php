@@ -16,7 +16,11 @@ Route::get('/show/{id}', 'NewsController@show');
 
 
 
-Route::get('manager', 'NewsController@list')->name('manager');
+Route::get('manager', 'NewsController@list')->name('manager')->middleware('auth');
 Route::resource('manager', 'NewsController')->only([
     'create', 'store', 'update', 'edit', 'destroy'
-]); //->middleware('auth');
+])->middleware('auth');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

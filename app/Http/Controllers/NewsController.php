@@ -132,7 +132,7 @@ class NewsController extends Controller
             $news->save();
 
             // redirect
-            Session::flash('message', 'Successfully created news!');
+            Session::flash('message', 'Successfully updated news:'.$news->title);
             return Redirect::to('/');
         }
     }
