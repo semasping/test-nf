@@ -6,7 +6,8 @@ For install this project
 
 `git clone https://github.com/semasping/test-nf`
 
-'cp .env.example .env'
+`composer install`
+`cp .env.example .env`
 `php artisan key:generate`
 
 Setup mysql config in .env file
